@@ -1,3 +1,5 @@
+from .pedestrian_crossing import PedestrianCrossing
+from .pedestrian_generator import PedestrianGenerator
 from .road import Road
 from copy import deepcopy
 from .vehicle_generator import VehicleGenerator
@@ -19,6 +21,7 @@ class Simulation:
         self.roads = []         # Array to store roads
         self.generators = []
         self.traffic_signals = []
+        self.pedestrian_crossing = []
 
     def create_road(self, start, end):
         road = Road(start, end)
@@ -34,11 +37,22 @@ class Simulation:
         self.generators.append(gen)
         return gen
 
+    def create_pedestrian_gen(self, config: object = {}) -> object:
+        gen = PedestrianGenerator(self, config)
+        self.generators.append(gen)
+        return gen
+
     def create_signal(self, roads, config={}):
         roads = [[self.roads[i] for i in road_group] for road_group in roads]
         sig = TrafficSignal(roads, config)
         self.traffic_signals.append(sig)
         return sig
+
+    def create_pedestrian_crossing(self, location, roads, config={}):
+        roads = [r for r in self.roads if (r.start, r.end) in roads]
+        cross = PedestrianCrossing(location, roads, config)
+        self.pedestrian_crossing.append(cross)
+        return cross
 
     def update(self):
         # Update every road
@@ -49,8 +63,14 @@ class Simulation:
         for gen in self.generators:
             gen.update()
 
+        # Add traffic signals
         for signal in self.traffic_signals:
             signal.update(self)
+
+        # Add pedestrian crossings
+        for cross in self.pedestrian_crossing:
+            for road in cross.paths:
+                road.update(self.dt)
 
         # Check roads for out of bounds vehicle
         for road in self.roads:
@@ -78,7 +98,36 @@ class Simulation:
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
                 # In all cases, remove it from its road
-                road.vehicles.popleft() 
+                road.vehicles.popleft()
+
+        for cross in self.pedestrian_crossing:
+            for road in cross.paths:
+                # If road has no vehicles, continue
+                if len(road.vehicles) == 0: continue
+                # If not
+                vehicle = road.vehicles[0]
+                next_road = self.roads[vehicle.current_road_index + 1]
+                # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
+                if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
+                    vehicle.slow(0.4 * vehicle.v_max)
+                    if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
+                        # Stop vehicles in the stop zone
+                        vehicle.stop()
+                # If first vehicle is out of road bounds
+                if vehicle.x >= road.length:
+                    # If vehicle has a next road
+                    if vehicle.current_road_index + 1 < len(vehicle.path):
+                        # Update current road to next road
+                        vehicle.current_road_index += 1
+                        # Create a copy and reset some vehicle properties
+                        new_vehicle = deepcopy(vehicle)
+                        new_vehicle.x = 0
+                        # Add it to the next road
+                        next_road_index = vehicle.path[vehicle.current_road_index]
+                        self.roads[next_road_index].vehicles.append(new_vehicle)
+                    # In all cases, remove it from its road
+                    road.vehicles.popleft()
+
         # Increment time
         self.t += self.dt
         self.frame_count += 1

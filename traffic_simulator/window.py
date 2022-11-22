@@ -136,10 +136,10 @@ class Window:
         """Draws a rectangle."""
         pygame.draw.rect(self.screen, color, (*pos, *size))
 
-    def circle(self, pos, radius, color, filled=True):
+    def circle(self, pos, radius, color):
         pygame.draw.circle(self.screen, color, *pos, radius)
 
-    def polygon(self, vertices, color, filled=True):
+    def polygon(self, vertices, color):
         pygame.draw.polygon(self.screen, color, vertices)
 
     def rotated_box(self, pos, size, angle=None, cos=None, sin=None, centered=True, color=(0, 0, 255), filled=True):
@@ -164,7 +164,7 @@ class Window:
                 [vertex(*e) for e in [(0,-1), (0, 1), (2,1), (2,-1)]]
             )
 
-        self.polygon(vertices, color, filled=filled)
+        self.polygon(vertices, color)
 
     def rotated_rect(self, pos, size, angle=None, cos=None, sin=None, centered=True, color=(0, 0, 255)):
         self.rotated_box(pos, size, angle=angle, cos=cos, sin=sin, centered=centered, color=color, filled=False)
@@ -285,11 +285,26 @@ class Window:
 
         self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
 
+    def draw_pedestrian(self, pedestrian, crossing):
+        l, h = 1, 1
+        sin, cos = crossing.paths[0].angle_sin, crossing.paths[0].angle_cos
+
+        x = crossing.paths[0].start[0] + cos * pedestrian.x
+        y = crossing.paths[0].start[1] + sin * pedestrian.x
+
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+
     def draw_vehicles(self):
         for road in self.sim.roads:
             # Draw vehicles
             for vehicle in road.vehicles:
                 self.draw_vehicle(vehicle, road)
+
+    def draw_pedestrians(self):
+        for cross in self.sim.pedestrian_crossing:
+            #Draw pedestrian
+            for pedestrian in cross.paths[0].vehicles:
+                self.draw_pedestrian(pedestrian, cross)
 
     def draw_signals(self):
         for signal in self.sim.traffic_signals:
@@ -313,6 +328,20 @@ class Window:
     #
     #     self.screen.blit(text_fps, (0, 0))
     #     self.screen.blit(text_frc, (100, 0))
+    def draw_pedestrian_crossing(self):
+        for cross in self.sim.pedestrian_crossing:
+            for i in range(0, 20, 4):
+                self.rotated_box(
+                    (cross.location[0], cross.location[1] - 8 + i),
+                    (6, 2),
+                    cos=cross.roads[0].angle_cos, sin=cross.roads[0].angle_sin,
+                    color=(255, 255, 255))
+            for i in range(-2, 20, 4):
+                self.rotated_box(
+                    (cross.location[0], cross.location[1] - 8 + i),
+                    (6, 2),
+                    cos=cross.roads[0].angle_cos, sin=cross.roads[0].angle_sin,
+                    color=(128, 128, 128))
 
 
     def draw(self):
@@ -325,7 +354,9 @@ class Window:
         # self.draw_axes()
 
         self.draw_roads()
+        self.draw_pedestrian_crossing()
         self.draw_vehicles()
+        self.draw_pedestrians()
         self.draw_signals()
 
         # Draw status info
