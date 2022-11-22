@@ -69,6 +69,7 @@ class Simulation:
 
         # Add pedestrian crossings
         for cross in self.pedestrian_crossing:
+            cross.update()
             for road in cross.paths:
                 road.update(self.dt)
 

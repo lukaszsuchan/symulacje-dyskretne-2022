@@ -22,7 +22,7 @@ l2 = round(abs(TRAFFIC_SIGNALS_AWITEKS[1] - NAWOJKI_FIRST_TURN[1]) * SCALE)
 l3 = round(abs(NAWOJKI_FIRST_TURN[1] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[1]) * SCALE)
 l4 = round(abs(ALEJA_KIJOWSKA[1] - TRAFFIC_SIGNALS_CZARNOWIEJSKA[1]) * SCALE) - 80
 l5 = round(abs(TRAFFIC_SIGNALS_CZARNOWIEJSKA[1] - CZARNOWIEJSKA_CROSSING[1]) * SCALE) - 100
-pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 525
+pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 540
 print(l1)
 print(l2)
 d1 = round(abs(ALEJA_KIJOWSKA[0] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[0]) * SCALE)
@@ -151,19 +151,19 @@ sim.create_roads([
 sim.create_signal([[4, 13], [14]])
 sim.create_signal([[1, 10]])
 
-sim.create_pedestrian_crossing((-45 + pedestrian_crossing_position_len, 0), (NAWOJKI_SECOND_PART_INBOUND, NAWOJKI_SECOND_PART_OUTBOUND))
+sim.create_pedestrian_crossing((-30 + pedestrian_crossing_position_len, 0), (NAWOJKI_SECOND_PART_INBOUND, NAWOJKI_SECOND_PART_OUTBOUND))
 
 def road(a): return range(a, a+15)
 
-# sim.create_gen({
-#     'vehicle_rate': 60,
-#     'vehicles': [
-#         [3, {'path': [0, 1, 2, 3, 4, 5, 6]}],
-#         # [1, {'path': [14, *road(23 + 15), 11]}],
-#         # [3, {'path': [14, *road(23), 6]}],
-#         # [1, {'path': [4, *road(23 + 45), 15]}]
-#     ]}
-# )
+sim.create_gen({
+    'vehicle_rate': 60,
+    'vehicles': [
+        [3, {'path': [0, 1, 2, 3, 4, 5, 6]}],
+        # [1, {'path': [14, *road(23 + 15), 11]}],
+        # [3, {'path': [14, *road(23), 6]}],
+        # [1, {'path': [4, *road(23 + 45), 15]}]
+    ]}
+)
 
 sim.create_pedestrian_gen()
 

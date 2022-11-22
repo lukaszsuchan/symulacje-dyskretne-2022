@@ -13,9 +13,9 @@ class PedestrianGenerator:
 
     def set_default_config(self):
         """Set default configuration"""
-        self.pedestrian_rate = 20
+        self.pedestrian_rate = 1
         self.pedestrians = [
-            (3, {'l': 1, 'v_max': 1, 'path': [0]})
+            (10, {'l': 1, 'v_max': 1, 'path': [0]})
         ]
         self.last_added_time = 0
 
@@ -24,6 +24,7 @@ class PedestrianGenerator:
 
     def generate_pedestrian(self):
         """Returns a random pedestrian from self.pedestrians with random proportions"""
+        self.sim.pedestrian_crossing[0].is_pedestrian_passing = True
         total = sum(pair[0] for pair in self.pedestrians)
         r = random.randint(1, total)
         for (weight, config) in self.pedestrians:
@@ -37,7 +38,8 @@ class PedestrianGenerator:
             # If time elasped after last added pedestrian is
             # greater than pedestrian_period; generate a pedestrian
             path = self.sim.pedestrian_crossing[0].paths[self.upcoming_pedestrian.path[0]]
-            if len(path.vehicles) == 0:
+            if len(path.vehicles) == 0 \
+                    or path.vehicles[-1].x > self.upcoming_pedestrian.s0 + self.upcoming_pedestrian.l:
                 self.upcoming_pedestrian.time_added = self.sim.t
                 path.vehicles.append(self.upcoming_pedestrian)
                 self.last_added_time = self.sim.t
