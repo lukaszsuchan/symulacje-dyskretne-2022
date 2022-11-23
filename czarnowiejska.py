@@ -15,21 +15,24 @@ ALEJA_KIJOWSKA = (50.068681, 19.913845)
 TRAFFIC_SIGNALS_CZARNOWIEJSKA = (50.0675762, 19.9181620)
 MIECHOWKSA = (50.0658352, 19.9140487)
 CZARNOWIEJSKA_CROSSING = (50.0664123, 19.9225809)
+PEDESTRIAN_CROSSING_NR1_CORD = (50.0693760, 19.9086055)
 
 l1 = round(abs(UP_LEFT[1] - TRAFFIC_SIGNALS_AWITEKS[1]) * SCALE)
 l2 = round(abs(TRAFFIC_SIGNALS_AWITEKS[1] - NAWOJKI_FIRST_TURN[1]) * SCALE)
 l3 = round(abs(NAWOJKI_FIRST_TURN[1] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[1]) * SCALE)
 l4 = round(abs(ALEJA_KIJOWSKA[1] - TRAFFIC_SIGNALS_CZARNOWIEJSKA[1]) * SCALE) - 80
 l5 = round(abs(TRAFFIC_SIGNALS_CZARNOWIEJSKA[1] - CZARNOWIEJSKA_CROSSING[1]) * SCALE) - 100
+pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 540
 print(l1)
 print(l2)
 d1 = round(abs(ALEJA_KIJOWSKA[0] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[0]) * SCALE)
 print(d1)
+print(pedestrian_crossing_position_len)
 
-NAWOJKI_RIGHT_START = (-50 - l1 -15, 4)
-NAWOJKI_LEFT_START = (-50 - l1, -4)
+NAWOJKI_RIGHT_START = (-50 - l1 - 15, 4)
+NAWOJKI_LEFT_START = (-50 - l1 - 15, -4)
 WEST_RIGHT = (-65, 4)
-WEST_LEFT = (-50, -4)
+WEST_LEFT = (-65, -4)
 RIGHT_TRAFFIC_SIGNALS_NAWOJKI = (-50, 2)
 LEFT_TRAFFIC_SIGNALS_NAWOJKI = (-50, -2)
 RIGHT_FIRST_TURN_NAWOJKI = (-50 + l2, 2)
@@ -52,9 +55,11 @@ NAWOJKI_FIRST_PART_INBOUND = (NAWOJKI_RIGHT_START, WEST_RIGHT)
 NAWOJKI_FIRST_PART_OUTBOUND = (WEST_LEFT, NAWOJKI_LEFT_START)
 RIGHT_NAWOJKI_FIRST_AND_SECOND_PART = (WEST_RIGHT, (-45, 2))
 RIGHT_CROSSING = ((-45, 2), (-30, 2))
+PEDESTRIAN_CROSSING_NR1 = ((-45 + pedestrian_crossing_position_len, 2), (-45 + pedestrian_crossing_position_len + 3, 2))
 LEFT_NAWOJKI_FIRST_AND_SECOND_PART = ((-30, -2), WEST_LEFT)
-LEFT_CROSSING = ((-30, -2), (-35, -2))
-NAWOJKI_SECOND_PART_INBOUND = ((-30, 2), RIGHT_FIRST_TURN_NAWOJKI)
+LEFT_CROSSING = ((-30, -2), (-45, -2))
+NAWOJKI_SECOND_PART_INBOUND = ((-30, 2), (125, 2))
+NAWOJKI_SECOND_AND_HALF_PART_INBOUND = ((125, 2), RIGHT_FIRST_TURN_NAWOJKI)
 NAWOJKI_SECOND_PART_OUTBOUND = (LEFT_FIRST_TURN_NAWOJKI, (-30, -2))
 NAWOJKI_THIRD_PART_INBOUND = ((RIGHT_FIRST_TURN_NAWOJKI[0], RIGHT_FIRST_TURN_NAWOJKI[1]), RIGHT_TRAFFIC_SIGNALS_ALEJA_KIJOWSKA)
 NAWOJKI_THIRD_PART_OUTBOUND = (LEFT_TRAFFIC_SIGNALS_ALEJA_KIJOWSKA, LEFT_FIRST_TURN_NAWOJKI)
@@ -100,6 +105,7 @@ sim.create_roads([
     RIGHT_NAWOJKI_FIRST_AND_SECOND_PART,
     RIGHT_CROSSING,
     NAWOJKI_SECOND_PART_INBOUND,
+    NAWOJKI_SECOND_AND_HALF_PART_INBOUND,
     NAWOJKI_THIRD_PART_INBOUND,
     RIGHT_KIJOWSKA_CROSSING_STRAIGHT,
     NAWOJKI_LAST_PART_INBOUND,
@@ -145,19 +151,25 @@ sim.create_roads([
 
 ])
 
-sim.create_signal([[4, 13] ,[14]])
+sim.create_signal([[5, 14], [15]])
+sim.create_signal([[1, 11]])
 
+sim.create_pedestrian_crossing((-30 + pedestrian_crossing_position_len, 0), (NAWOJKI_SECOND_PART_INBOUND, NAWOJKI_SECOND_PART_OUTBOUND))
+print(-30 + pedestrian_crossing_position_len)
+print(-50 + l2)
 def road(a): return range(a, a+15)
 
 sim.create_gen({
     'vehicle_rate': 60,
     'vehicles': [
-        [3, {'path': [0, 1, 2, 3, 4, 5, 6]}],
+        [3, {'path': [0, 1, 2, 3, 4, 5, 6, 7]}],
         # [1, {'path': [14, *road(23 + 15), 11]}],
         # [3, {'path': [14, *road(23), 6]}],
         # [1, {'path': [4, *road(23 + 45), 15]}]
     ]}
 )
+
+sim.create_pedestrian_gen()
 
 win = Window(sim)
 win.zoom = 1.5

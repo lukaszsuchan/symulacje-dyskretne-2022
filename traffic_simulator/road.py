@@ -39,11 +39,16 @@ class Road:
         self.angle_cos = (self.end[0]-self.start[0]) / self.length
         # self.angle = np.arctan2(self.end[1]-self.start[1], self.end[0]-self.start[0])
         self.has_traffic_signal = False
+        self.has_crossing = False
 
     def set_traffic_signal(self, signal, group):
         self.traffic_signal = signal
         self.traffic_signal_group = group
         self.has_traffic_signal = True
+
+    def set_crossing(self, crossing):
+        self.crossing = crossing
+        self.has_crossing = True
 
     @property
     def traffic_signal_state(self):
@@ -51,6 +56,11 @@ class Road:
             i = self.traffic_signal_group
             return self.traffic_signal.current_cycle[i]
         return True
+
+    @property
+    def crossing_state(self):
+        if self.has_crossing:
+            return not self.crossing.is_pedestrian_passing
 
     def update(self, dt):
         n = len(self.vehicles)
@@ -79,3 +89,20 @@ class Road:
                    self.vehicles[0].x <= self.length - self.traffic_signal.stop_distance / 2:
                     # Stop vehicles in the stop zone
                     self.vehicles[0].stop()
+
+            if self.has_crossing:
+                if self.crossing_state:
+                    self.vehicles[0].unstop()
+                    for vehicle in self.vehicles:
+                        vehicle.unslow()
+                else:
+                    l = self.length
+                    if self.vehicles[0].x >= 108:
+                        # Slow vehicles in slowing zone
+                        self.vehicles[0].slow(0.4 * self.vehicles[0]._v_max)
+                    if self.vehicles[0].x >= 144 and \
+                            self.vehicles[0].x <= 151.5:
+                        # Stop vehicles in the stop zone
+                        self.vehicles[0].stop()
+
+
