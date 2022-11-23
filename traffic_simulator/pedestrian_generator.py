@@ -15,7 +15,8 @@ class PedestrianGenerator:
         """Set default configuration"""
         self.pedestrian_rate = 1
         self.pedestrians = [
-            (10, {'l': 1, 'v_max': 1, 'path': [0]})
+            (1, {'l': 1, 'v_max': 1, 'path': [2]}),
+            (5, {'l': 1, 'v_max': 2, 'path': [0]})
         ]
         self.last_added_time = 0
 

@@ -109,11 +109,11 @@ class Simulation:
                 vehicle = road.vehicles[0]
                 next_road = self.roads[vehicle.current_road_index + 1]
                 # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
-                if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
-                    vehicle.slow(0.4 * vehicle.v_max)
-                    if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
-                        # Stop vehicles in the stop zone
-                        vehicle.stop()
+                # if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
+                #     vehicle.slow(0.4 * vehicle.v_max)
+                #     if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
+                #         # Stop vehicles in the stop zone
+                #         vehicle.stop()
                 # If first vehicle is out of road bounds
                 if vehicle.x >= road.length:
                     # If vehicle has a next road
