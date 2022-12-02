@@ -79,11 +79,13 @@ class Simulation:
             if len(road.vehicles) == 0: continue
             # If not
             vehicle = road.vehicles[0]
-            if(vehicle.current_road_index in vehicle.path):
+            if vehicle.current_road_index in vehicle.path and vehicle.current_road_index != vehicle.path[-1]:
                 # print(vehicle.path)
                 # print(vehicle.current_road_index)
-                next_road_id = vehicle.path.index(vehicle.current_road_index) + 1
+                next_road_id_in_path = vehicle.path.index(vehicle.current_road_index) + 1
+                next_road_id = vehicle.path[next_road_id_in_path]
                 next_road = self.roads[next_road_id]
+
             # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
                 if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
                     vehicle.slow(0.4 * vehicle.v_max)
