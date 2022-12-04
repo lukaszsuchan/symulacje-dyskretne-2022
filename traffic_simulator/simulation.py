@@ -79,6 +79,16 @@ class Simulation:
             if len(road.vehicles) == 0: continue
             # If not
             vehicle = road.vehicles[0]
+
+            #bus pass
+            if vehicle.current_road_index == 2:
+               if len(self.roads[27].vehicles) > 0 and len(self.roads[26].vehicles) > 0 and vehicle.x < road.length-100:
+                    vehicle.slow(0.4 * vehicle.v_max)
+                    if vehicle.x >= road.length - 100 and vehicle.x <= road.length - 50:
+                        vehicle.stop()
+
+
+
             if vehicle.current_road_index in vehicle.path and vehicle.current_road_index != vehicle.path[-1]:
                 # print(vehicle.path)
                 # print(vehicle.current_road_index)
