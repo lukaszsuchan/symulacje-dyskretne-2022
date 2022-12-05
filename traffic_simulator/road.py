@@ -102,11 +102,12 @@ class Road:
                         vehicle.unslow()
                 else:
                     l = self.length
-                    if self.vehicles[0].x >= 108:
+                    print(l)
+                    if self.vehicles[0].x >= l - 47:
                         # Slow vehicles in slowing zone
                         self.vehicles[0].slow(0.4 * self.vehicles[0]._v_max)
-                    if self.vehicles[0].x >= 144 and \
-                            self.vehicles[0].x <= 151.5:
+                    if self.vehicles[0].x >= l - 11 and \
+                            self.vehicles[0].x <= l - 3.5:
                         # Stop vehicles in the stop zone
                         self.vehicles[0].stop()
 

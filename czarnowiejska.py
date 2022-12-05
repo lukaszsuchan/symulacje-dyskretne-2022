@@ -103,7 +103,7 @@ CZARNOWIEJSKA_FIRST_TURN_LEFT = turn_road((LEFT_CZARNOWIEJSKA_FIRST_PART[0] - 1,
 BUS_LINE_NAWOJKI_FIRST_PART_I = ((-10, 6), (85, 6))
 BUS_LINE_NAWOJKI_FIRST_PART_II = ((85, 6), (100, 6))
 BUS_FIRST_JOIN = ((-29, 2.5), (-8, 6.5))
-BUS_FIRST_MERGE = ((100, 6), (115, 2))
+BUS_FIRST_MERGE = ((100, 6), (125, 2))
 
 MIECHOWSKA_TURN_RIGHT = turn_road(RIGHT_NAWOJKI_END, (l2 + l3 - 4, 50), TURN_RIGHT, 15)
 
@@ -172,17 +172,26 @@ print(-30 + pedestrian_crossing_position_len)
 print(-50 + l2)
 def road(a): return range(a, a+15)
 
+
+
 sim.create_gen({
     'vehicle_rate': 30,
     'vehicles': [
         [3, {'path': [0, 1, 2, 3, 4, 5, 6, 7, 20, 24]}],
         [1, {'path': [16, *road(29 + 15), 13, 12, 11, 10, 9, 8]}],
         [3, {'path': [16, *road(29), 7, 19]}],
-        [4, {'path': [0, 1, 2, 27, 25, 26, 28], 'l': 8, 'v_max': 6}]
+        [4, {'path': [23, 21, 15, 14, 13, 12, 11, 10, 9]}]
     ]}
 )
 
-# sim.create_pedestrian_gen()
+sim.create_gen({
+    'vehicle_rate': 2,
+    'vehicles': [
+        [4, {'path': [0, 1, 2, 27, 25, 26, 28, 4, 5, 6, 7, 20, 24], 'l': 8, 'v_max': 6}]
+    ]}
+)
+
+sim.create_pedestrian_gen()
 
 win = Window(sim)
 win.zoom = 1.5

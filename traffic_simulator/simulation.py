@@ -5,6 +5,7 @@ from copy import deepcopy
 from .vehicle_generator import VehicleGenerator
 from .traffic_signal import TrafficSignal
 
+
 class Simulation:
     def __init__(self, config={}):
         # Set default configuration
@@ -15,10 +16,10 @@ class Simulation:
             setattr(self, attr, val)
 
     def set_default_config(self):
-        self.t = 0.0            # Time keeping
-        self.frame_count = 0    # Frame count keeping
-        self.dt = 1/60          # Simulation time step
-        self.roads = []         # Array to store roads
+        self.t = 0.0  # Time keeping
+        self.frame_count = 0  # Frame count keeping
+        self.dt = 1 / 60  # Simulation time step
+        self.roads = []  # Array to store roads
         self.generators = []
         self.traffic_signals = []
         self.pedestrian_crossing = []
@@ -80,27 +81,28 @@ class Simulation:
             # If not
             vehicle = road.vehicles[0]
 
-            #bus pass
+            # bus pass
             if vehicle.current_road_index == 2:
-               if len(self.roads[27].vehicles) > 0 and len(self.roads[26].vehicles) > 0 and vehicle.x < road.length-100:
+                if len(self.roads[27].vehicles) > 0 and len(
+                        self.roads[26].vehicles) > 0 and vehicle.x < road.length - 100:
                     vehicle.slow(0.4 * vehicle.v_max)
                     if vehicle.x >= road.length - 100 and vehicle.x <= road.length - 50:
                         vehicle.stop()
-
-
-
-            if vehicle.current_road_index in vehicle.path and vehicle.current_road_index != vehicle.path[-1]:
+            # print(vehicle.path)
+            # print(vehicle.current_road_index)
+            if vehicle.current_road_index != len(vehicle.path) - 1:
                 # print(vehicle.path)
                 # print(vehicle.current_road_index)
-                next_road_id_in_path = vehicle.path.index(vehicle.current_road_index) + 1
-                next_road_id = vehicle.path[next_road_id_in_path]
-                next_road = self.roads[next_road_id]
+                next_road_id_in_path = vehicle.path[vehicle.current_road_index + 1]
+                next_road = self.roads[next_road_id_in_path]
 
-            # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
+                # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
                 if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
                     vehicle.slow(0.4 * vehicle.v_max)
+                    print("zwalniam")
                     if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
-                    # Stop vehicles in the stop zone
+                        # Stop vehicles in the stop zone
+                        print(("zatrzymałem się"))
                         vehicle.stop()
             # If first vehicle is out of road bounds
             if vehicle.x >= road.length:
@@ -148,7 +150,6 @@ class Simulation:
         # Increment time
         self.t += self.dt
         self.frame_count += 1
-
 
     def run(self, steps):
         for _ in range(steps):
