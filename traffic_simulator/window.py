@@ -285,6 +285,14 @@ class Window:
 
         self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
 
+    def draw_bus(self, bus, road):
+        l, h = 8, 2
+        sin, cos = road.angle_sin, road.angle_cos
+
+        x = road.start[0] + cos * bus.x
+        y = road.start[1] + sin * bus.x
+
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin,color=(255, 140, 0), centered=True)
     def draw_pedestrian(self, pedestrian, crossing):
         l, h = 1, 1
         sin, cos = crossing.paths[0].angle_sin, crossing.paths[0].angle_cos
@@ -298,7 +306,15 @@ class Window:
         for road in self.sim.roads:
             # Draw vehicles
             for vehicle in road.vehicles:
-                self.draw_vehicle(vehicle, road)
+                if vehicle.l == 4:
+                    self.draw_vehicle(vehicle, road)
+
+    def draw_buses(self):
+        for road in self.sim.roads:
+            # Draw bus
+            for vehicle in road.vehicles:
+                if vehicle.l == 8:
+                    self.draw_bus(vehicle, road)
 
     def draw_pedestrians(self):
         for cross in self.sim.pedestrian_crossing:
@@ -357,6 +373,7 @@ class Window:
         self.draw_roads()
         self.draw_pedestrian_crossing()
         self.draw_vehicles()
+        self.draw_buses()
         self.draw_pedestrians()
         self.draw_signals()
 
