@@ -99,10 +99,10 @@ class Simulation:
                 # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
                 if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
                     vehicle.slow(0.4 * vehicle.v_max)
-                    print("zwalniam")
+                    #print("zwalniam")
                     if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
                         # Stop vehicles in the stop zone
-                        print(("zatrzymałem się"))
+                        #print(("zatrzymałem się"))
                         vehicle.stop()
             # If first vehicle is out of road bounds
             if vehicle.x >= road.length:

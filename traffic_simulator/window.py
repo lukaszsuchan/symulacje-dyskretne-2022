@@ -22,15 +22,15 @@ class Window:
 
         self.fps = 60
         self.zoom = 5
-        self.offset = (0, 0)
+        self.offset = (-163, 0)
 
         self.mouse_last = (0, 0)
         self.mouse_down = False
+        self.min_zoom = 1.0698067434793457
 
 
     async def loop(self, loop=None):
         """Shows a window visualizing the simulation and runs the loop function."""
-        
         # Create a pygame window
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.flip()
@@ -71,10 +71,11 @@ class Window:
                         self.mouse_down = True
                     if event.button == 4:
                         # Mouse wheel up
-                        self.zoom *=  (self.zoom**2+self.zoom/4+1) / (self.zoom**2+1)
+                        self.zoom *= (self.zoom**2+self.zoom/4+1) / (self.zoom**2+1)
                     if event.button == 5:
-                        # Mouse wheel down 
-                        self.zoom *= (self.zoom**2+1) / (self.zoom**2+self.zoom/4+1)
+                        # Mouse wheel down
+                        if self.zoom > self.min_zoom:
+                            self.zoom *= (self.zoom**2+1) / (self.zoom**2+self.zoom/4+1)
                 elif event.type == pygame.MOUSEMOTION:
                     # Drag content
                     if self.mouse_down:
@@ -112,6 +113,17 @@ class Window:
         return (
             int(-self.offset[0] + (x - self.width/2)/self.zoom),
             int(-self.offset[1] + (y - self.height/2)/self.zoom)
+        )
+
+    def own_convert(self, x, y=None):
+        """Converts screen coordinates to simulation coordinates"""
+        if isinstance(x, list):
+            return [self.convert(e[0], e[1]) for e in x]
+        if isinstance(x, tuple):
+            return self.convert(*x)
+        return (
+            int(self.offset[0] + (x - self.width/2)/self.zoom),
+            int(self.offset[1] + (y - self.height/2)/self.zoom)
         )
 
 
@@ -364,9 +376,16 @@ class Window:
     def draw(self):
         # Fill background
         self.background(*self.bg_color)
+        img = pygame.image.load('assets/background.png')
+        img.convert()
+        scale_x = int(self.width*self.zoom)
+        scale_y = int(self.height*self.zoom)
+        x_end, y_end = self.own_convert(self.width, self.height)
+        img = pygame.transform.scale(img, (scale_x, scale_y))
+        self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
 
         # Major and minor grid and axes
-        self.draw_grid(4, (220,220,220))
+        self.draw_grid(4, (220, 220, 220))
         # self.draw_grid(100, (200,200,200))
         # self.draw_axes()
 
