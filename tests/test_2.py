@@ -1,4 +1,4 @@
-from trafficSimulator import *
+from traffic_simulator import *
 
 # Create simulation
 sim = Simulation()
@@ -27,4 +27,4 @@ sim.create_signal([[0], [2]])
 # Start simulation
 win = Window(sim)
 win.offset = (-150, -110)
-win.run(steps_per_update=5)
+asyncio.run(win.run(steps_per_update=5))
