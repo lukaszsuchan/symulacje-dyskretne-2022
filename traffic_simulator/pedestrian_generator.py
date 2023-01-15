@@ -38,10 +38,11 @@ class PedestrianGenerator:
         if self.sim.t - self.last_added_time >= 60 / self.pedestrian_rate:
             # If time elasped after last added pedestrian is
             # greater than pedestrian_period; generate a pedestrian
-            path = self.sim.pedestrian_crossing[0].paths[self.upcoming_pedestrian.path[0]]
-            if len(path.vehicles) == 0 \
-                    or path.vehicles[-1].x > self.upcoming_pedestrian.s0 + self.upcoming_pedestrian.l:
-                self.upcoming_pedestrian.time_added = self.sim.t
-                path.vehicles.append(self.upcoming_pedestrian)
-                self.last_added_time = self.sim.t
-            self.upcoming_pedestrian = self.generate_pedestrian()
+            for cross in self.sim.pedestrian_crossing:
+                path = cross.paths[self.upcoming_pedestrian.path[0]]
+                if len(path.vehicles) == 0 \
+                        or path.vehicles[-1].x > self.upcoming_pedestrian.s0 + self.upcoming_pedestrian.l:
+                    self.upcoming_pedestrian.time_added = self.sim.t
+                    path.vehicles.append(self.upcoming_pedestrian)
+                    self.last_added_time = self.sim.t
+                self.upcoming_pedestrian = self.generate_pedestrian()

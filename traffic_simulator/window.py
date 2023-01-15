@@ -26,7 +26,7 @@ class Window:
 
         self.mouse_last = (0, 0)
         self.mouse_down = False
-        self.min_zoom = 1.0698067434793457
+        self.min_zoom = 0
 
 
     async def loop(self, loop=None):
@@ -376,13 +376,13 @@ class Window:
     def draw(self):
         # Fill background
         self.background(*self.bg_color)
-        img = pygame.image.load('assets/background.png')
-        img.convert()
+        # img = pygame.image.load('assets/background.png')
+        # img.convert()
         scale_x = int(self.width*self.zoom)
         scale_y = int(self.height*self.zoom)
         x_end, y_end = self.own_convert(self.width, self.height)
-        img = pygame.transform.scale(img, (scale_x, scale_y))
-        self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
+        # img = pygame.transform.scale(img, (scale_x, scale_y))
+        # self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
 
         # Major and minor grid and axes
         self.draw_grid(4, (220, 220, 220))
