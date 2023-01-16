@@ -23,11 +23,11 @@ l3 = round(abs(NAWOJKI_FIRST_TURN[1] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[1]) * SCAL
 l4 = round(abs(ALEJA_KIJOWSKA[1] - TRAFFIC_SIGNALS_CZARNOWIEJSKA[1]) * SCALE) - 80
 l5 = round(abs(TRAFFIC_SIGNALS_CZARNOWIEJSKA[1] - CZARNOWIEJSKA_CROSSING[1]) * SCALE) - 100
 pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 540
-print(l1)
-print(l2)
+# print(l1)
+# print(l2)
 d1 = round(abs(ALEJA_KIJOWSKA[0] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[0]) * SCALE)
-print(d1)
-print(pedestrian_crossing_position_len)
+# print(d1)
+# print(pedestrian_crossing_position_len)
 
 NAWOJKI_RIGHT_START = (-50 - l1 - 15, 4)
 NAWOJKI_LEFT_START = (-50 - l1 - 15, -4)
@@ -118,6 +118,15 @@ BUS_LINE_CZARNOWIEJSKA = ((155, 6), (185, 6))
 BUS_LINE_CZARNOWIEJSKA_II = ((185, 6), (260, 20))
 BUS_SECOND_MERGE = ((260, 20), (288, 22))
 
+BUS_THIRD_JOIN = ((l2 + l3, 50), (400, 53))
+BUS_LINE_CZARNOWIEJSKA_III = ((400, 53), (468, 49))
+BUS_LINE_CZARNOWIEJSKA_IV = ((467.5, 49), (565, 67.5))
+BUS_THIRD_MERGE = ((565, 67.5), (585, 67))
+
+BUS_FOURTH_JOIN = ((585, 67), (610, 74))
+BUS_LINE_CZARNOWIEJSKA_V = ((610, 74), (755, 84.5))
+BUS_FOURTH_MERGE = ((755, 84.5), (779, 82.5))
+
 MIECHOWSKA_TURN_RIGHT = turn_road(RIGHT_NAWOJKI_END, (l2 + l3 - 4, 50), TURN_RIGHT, 15)
 
 sim.create_roads([
@@ -166,6 +175,7 @@ sim.create_roads([
     RIGHT_FOURTH_PART_CZARNOWIEJSKA,
     RIGHT_FIFTH_PART_CZARNOWIEJSKA,
 
+    #index-33
     BUS_LINE_NAWOJKI_FIRST_PART_I,
     BUS_LINE_NAWOJKI_FIRST_PART_II,
     BUS_FIRST_JOIN,
@@ -176,7 +186,16 @@ sim.create_roads([
     BUS_LINE_CZARNOWIEJSKA_II,
     BUS_SECOND_MERGE,
 
-    # index-41
+    BUS_THIRD_JOIN,
+    BUS_LINE_CZARNOWIEJSKA_III,
+    BUS_LINE_CZARNOWIEJSKA_IV,
+    BUS_THIRD_MERGE,
+
+    BUS_FOURTH_JOIN,
+    BUS_LINE_CZARNOWIEJSKA_V,
+    BUS_FOURTH_MERGE,
+
+    # index-48
     *KIJOWSKA_NAWOJKI_TURN_RIGHT,
     *KIJOWSKA_NAWOJKI_TURN_LEFT,
 
@@ -194,7 +213,7 @@ sim.create_roads([
 
 sim.create_signal([[6, 17], [18]])
 sim.create_signal([[1, 12]])
-sim.create_signal([[28, 31]])
+sim.create_signal([[28, 31, 47]])
 
 sim.create_pedestrian_crossing((-30 + pedestrian_crossing_position_len, 0), (NAWOJKI_SECOND_PART_INBOUND, NAWOJKI_SECOND_AND_HALF_PART_OUTBOUND))
 print(-30 + pedestrian_crossing_position_len)
@@ -210,8 +229,8 @@ sim.create_gen({
     'vehicle_rate': 30,
     'vehicles': [
         [3, {'path': [0, 1, 2, 3, 4, 5, 6, 7, 8, 22, 29 ,30, 31, 32]}],
-        [1, {'path': [18, *road(41 + 15), 15, 14, 13, 12, 11, 10, 9]}],
-        [3, {'path': [18, *road(41), 8, 21]}],
+        [1, {'path': [18, *road(48 + 15), 15, 14, 13, 12, 11, 10, 9]}],
+        [3, {'path': [18, *road(48), 8, 21]}],
         [4, {'path': [28, 27, 26, 25, 23, 17, 16, 15, 14, 13, 12, 11, 10]}]
     ]}
 )
@@ -219,7 +238,7 @@ sim.create_gen({
 sim.create_gen({
     'vehicle_rate': 2,
     'vehicles': [
-        [4, {'path': [0, 1, 2, 35, 33, 34, 36, 4, 5, 6, 7, 8, 22, 29, 30, 31, 32], 'l': 8, 'v_max': 6}]
+        [4, {'path': [0, 1, 2, 35, 33, 34, 36, 37, 38, 39, 40,6, 7, 8, 41, 42, 43, 44, 45, 46, 47, 32], 'l': 8, 'v_max': 6}]
     ]}
 )
 

@@ -81,6 +81,9 @@ class Simulation:
             # If not
             vehicle = road.vehicles[0]
 
+            # if self.roads.index(road) == 46 :
+            #     # print("jedzie bus")
+            #     vehicle.
             # bus pass
             if vehicle.current_road_index == 2:
                 if len(self.roads[27].vehicles) > 0 and len(
