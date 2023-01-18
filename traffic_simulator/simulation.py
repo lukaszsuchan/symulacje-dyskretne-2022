@@ -81,9 +81,6 @@ class Simulation:
             # If not
             vehicle = road.vehicles[0]
 
-            # if self.roads.index(road) == 46 :
-            #     # print("jedzie bus")
-            #     vehicle.
             # bus pass
             if vehicle.current_road_index == 2:
                 if len(self.roads[27].vehicles) > 0 and len(
@@ -91,21 +88,16 @@ class Simulation:
                     vehicle.slow(0.4 * vehicle.v_max)
                     if vehicle.x >= road.length - 100 and vehicle.x <= road.length - 50:
                         vehicle.stop()
-            # print(vehicle.path)
-            # print(vehicle.current_road_index)
+
             if vehicle.current_road_index != len(vehicle.path) - 1:
-                # print(vehicle.path)
-                # print(vehicle.current_road_index)
                 next_road_id_in_path = vehicle.path[vehicle.current_road_index + 1]
                 next_road = self.roads[next_road_id_in_path]
 
                 # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
                 if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
                     vehicle.slow(0.4 * vehicle.v_max)
-                    #print("zwalniam")
                     if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
                         # Stop vehicles in the stop zone
-                        #print(("zatrzymałem się"))
                         vehicle.stop()
             # If first vehicle is out of road bounds
             if vehicle.x >= road.length:
@@ -128,13 +120,6 @@ class Simulation:
                 if len(road.vehicles) == 0: continue
                 # If not
                 vehicle = road.vehicles[0]
-                # next_road = self.roads[vehicle.current_road_index + 1]
-                # if next_road.length < (len(next_road.vehicles) * 4 + (len(next_road.vehicles) - 1) * 4) + 10:
-                # if len(next_road.vehicles) > 0 and next_road.vehicles[-1].x < 8:
-                #     vehicle.slow(0.4 * vehicle.v_max)
-                #     if vehicle.x >= road.length - 8 and vehicle.x <= road.length - 4:
-                #         # Stop vehicles in the stop zone
-                #         vehicle.stop()
                 # If first vehicle is out of road bounds
                 if vehicle.x >= road.length:
                     # If vehicle has a next road

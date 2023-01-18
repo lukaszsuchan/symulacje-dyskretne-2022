@@ -23,11 +23,8 @@ l3 = round(abs(NAWOJKI_FIRST_TURN[1] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[1]) * SCAL
 l4 = round(abs(ALEJA_KIJOWSKA[1] - TRAFFIC_SIGNALS_CZARNOWIEJSKA[1]) * SCALE) - 80
 l5 = round(abs(TRAFFIC_SIGNALS_CZARNOWIEJSKA[1] - CZARNOWIEJSKA_CROSSING[1]) * SCALE) - 100
 pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 540
-# print(l1)
-# print(l2)
 d1 = round(abs(ALEJA_KIJOWSKA[0] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[0]) * SCALE)
-# print(d1)
-# print(pedestrian_crossing_position_len)
+
 
 NAWOJKI_RIGHT_START = (-50 - l1 - 15, 4)
 NAWOJKI_LEFT_START = (-50 - l1 - 15, -4)
@@ -215,12 +212,6 @@ sim.create_signal([[6, 17], [18]])
 sim.create_signal([[1, 12]])
 sim.create_signal([[28, 31, 47]])
 
-# sim.create_pedestrian_crossing((-30 + pedestrian_crossing_position_len, 0), (NAWOJKI_SECOND_PART_INBOUND, NAWOJKI_SECOND_AND_HALF_PART_OUTBOUND))
-# print(-30 + pedestrian_crossing_position_len)
-# print(-50 + l2)
-# sim.create_pedestrian_crossing((288, 22), (NAWOJKI_THIRD_PART_INBOUND_I, NAWOJKI_THIRD_PART_OUTBOUND_I))
-# sim.create_pedestrian_crossing((288, 22), (NAWOJKI_THIRD_PART_INBOUND_I, NAWOJKI_THIRD_PART_OUTBOUND_I))
-# sim.create_pedestrian_crossing((-50 + l2 + l3 + l4 + l5, 68), (RIGHT_SECOND_PART_CZARNOWIEJSKA, LEFT_THIRD_PART_CZARNOWIEJSKA))
 def road(a): return range(a, a+15)
 
 
@@ -241,8 +232,6 @@ sim.create_gen({
         [4, {'path': [0, 1, 2, 35, 33, 34, 36, 37, 38, 39, 40,6, 7, 8, 41, 42, 43, 44, 45, 46, 47, 32], 'l': 8, 'v_max': 6}]
     ]}
 )
-
-# sim.create_pedestrian_gen()
 
 win = Window(sim)
 win.zoom = 1.5

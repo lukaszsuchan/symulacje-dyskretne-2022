@@ -207,8 +207,6 @@ sim.create_roads([
 
     *CZARNOWIEJSKA_FIRST_TURN_RIGHT,
     *CZARNOWIEJSKA_FIRST_TURN_LEFT
-    # *MIECHOWSKA_TURN_RIGHT
-
 ])
 
 sim.create_signal([[6, 17], [18]], {"cycle_time" : 20})

@@ -23,11 +23,8 @@ l3 = round(abs(NAWOJKI_FIRST_TURN[1] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[1]) * SCAL
 l4 = round(abs(ALEJA_KIJOWSKA[1] - TRAFFIC_SIGNALS_CZARNOWIEJSKA[1]) * SCALE) - 80
 l5 = round(abs(TRAFFIC_SIGNALS_CZARNOWIEJSKA[1] - CZARNOWIEJSKA_CROSSING[1]) * SCALE) - 100
 pedestrian_crossing_position_len = round(abs(CZARNOWIEJSKA_CROSSING[1] - PEDESTRIAN_CROSSING_NR1_CORD[1]) * SCALE) - 540
-# print(l1)
-# print(l2)
 d1 = round(abs(ALEJA_KIJOWSKA[0] - TRAFFIC_SIGNALS_ALEJA_KIJOWSKA[0]) * SCALE)
-# print(d1)
-# print(pedestrian_crossing_position_len)
+
 
 NAWOJKI_RIGHT_START = (-50 - l1 - 15, 4)
 NAWOJKI_LEFT_START = (-50 - l1 - 15, -4)
@@ -207,7 +204,6 @@ sim.create_roads([
 
     *CZARNOWIEJSKA_FIRST_TURN_RIGHT,
     *CZARNOWIEJSKA_FIRST_TURN_LEFT
-    # *MIECHOWSKA_TURN_RIGHT
 
 ])
 
