@@ -18,7 +18,7 @@ class Window:
         """Set default configuration"""
         self.width = 1000
         self.height = 700
-        self.bg_color = (250, 250, 250)
+        self.bg_color = (9, 119, 48)
 
         self.fps = 60
         self.zoom = 5
@@ -157,7 +157,7 @@ class Window:
     def rotated_rect(self, pos, size, angle=None, cos=None, sin=None, centered=True, color=(0, 0, 255)):
         self.rotated_box(pos, size, angle=angle, cos=cos, sin=sin, centered=centered, color=color, filled=False)
 
-    def arrow(self, pos, size, angle=None, cos=None, sin=None, color=(150, 150, 190)):
+    def arrow(self, pos, size, angle=None, cos=None, sin=None, color=(255, 255, 255)):
         if angle:
             cos, sin = math.cos(angle), math.sin(angle)
         
@@ -187,7 +187,7 @@ class Window:
                 (road.length, 3.7),
                 cos=road.angle_cos,
                 sin=road.angle_sin,
-                color=(180, 180, 220),
+                color=(130, 130, 130),
                 centered=False
             )
 
@@ -295,13 +295,13 @@ class Window:
     def draw(self):
         # Fill background
         self.background(*self.bg_color)
-        # img = pygame.image.load('assets/background.png')
-        # img.convert()
+        img = pygame.image.load('assets/background.jpg')
+        img.convert()
         scale_x = int(self.width*self.zoom)
         scale_y = int(self.height*self.zoom)
         x_end, y_end = self.own_convert(self.width, self.height)
-        # img = pygame.transform.scale(img, (scale_x, scale_y))
-        # self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
+        img = pygame.transform.scale(img, (scale_x, scale_y))
+        self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
 
         self.draw_roads()
         self.draw_pedestrian_crossing()
