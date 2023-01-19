@@ -3,28 +3,22 @@ from traffic_simulator import *
 # Create simulation
 sim = Simulation()
 
-# Add multiple roads
 sim.create_roads([
-    ((0, 100), (148, 100)),
-    ((148, 100), (300, 100)),
-    
-    ((150, 0), (150, 98)),
-    ((150, 98), (150, 200)),
+    ((0, 100), (150, 100)),
+    ((150, 100), (300, 100))
 ])
+
+sim.create_pedestrian_crossing((150, 100), (((0, 100), (150, 100)), ((150, 100), (300, 100))))
 
 sim.create_gen({
     'vehicle_rate': 20,
     'vehicles': [
-        [1, {"path": [0, 1]}],
-        [1, {"path": [0, 3]}],
-        [1, {"path": [2, 3]}],
-        [1, {"path": [2, 3]}]
+        [1, {"path": [0, 1]}]
     ]
 })
 
-sim.create_signal([[0], [2]])
+sim.create_pedestrian_gen()
 
-# Start simulation
 win = Window(sim)
 win.offset = (-150, -110)
 asyncio.run(win.run(steps_per_update=5))

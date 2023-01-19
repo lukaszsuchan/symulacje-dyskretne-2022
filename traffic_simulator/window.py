@@ -18,7 +18,7 @@ class Window:
         """Set default configuration"""
         self.width = 1000
         self.height = 700
-        self.bg_color = (250, 250, 250)
+        self.bg_color = (9, 119, 48)
 
         self.fps = 60
         self.zoom = 5
@@ -37,10 +37,6 @@ class Window:
 
         # Fixed fps
         clock = pygame.time.Clock()
-
-        # To draw text
-        pygame.font.init()
-        self.text_font = pygame.font.SysFont('Lucida Console', 16)
 
         # Draw loop
         running = True
@@ -131,26 +127,6 @@ class Window:
         """Fills screen with one color."""
         self.screen.fill((r, g, b))
 
-    def line(self, start_pos, end_pos, color):
-        """Draws a line."""
-        # gfxdraw.line(
-        #     self.screen,
-        #     *start_pos,
-        #     *end_pos,
-        #     color
-        # )
-
-    def rect(self, pos, size, color):
-        """Draws a rectangle."""
-        pygame.draw.rect(self.screen, color, (*pos, *size))
-
-    def box(self, pos, size, color):
-        """Draws a rectangle."""
-        pygame.draw.rect(self.screen, color, (*pos, *size))
-
-    def circle(self, pos, radius, color):
-        pygame.draw.circle(self.screen, color, *pos, radius)
-
     def polygon(self, vertices, color):
         pygame.draw.polygon(self.screen, color, vertices)
 
@@ -181,7 +157,7 @@ class Window:
     def rotated_rect(self, pos, size, angle=None, cos=None, sin=None, centered=True, color=(0, 0, 255)):
         self.rotated_box(pos, size, angle=angle, cos=cos, sin=sin, centered=centered, color=color, filled=False)
 
-    def arrow(self, pos, size, angle=None, cos=None, sin=None, color=(150, 150, 190)):
+    def arrow(self, pos, size, angle=None, cos=None, sin=None, color=(255, 255, 255)):
         if angle:
             cos, sin = math.cos(angle), math.sin(angle)
         
@@ -203,43 +179,6 @@ class Window:
             centered=False
         )
 
-
-    def draw_axes(self, color=(100, 100, 100)):
-        x_start, y_start = self.inverse_convert(0, 0)
-        x_end, y_end = self.inverse_convert(self.width, self.height)
-        self.line(
-            self.convert((0, y_start)),
-            self.convert((0, y_end)),
-            color
-        )
-        self.line(
-            self.convert((x_start, 0)),
-            self.convert((x_end, 0)),
-            color
-        )
-
-    def draw_grid(self, unit=50, color=(150,150,150)):
-        x_start, y_start = self.inverse_convert(0, 0)
-        x_end, y_end = self.inverse_convert(self.width, self.height)
-
-        n_x = int(x_start / unit)
-        n_y = int(y_start / unit)
-        m_x = int(x_end / unit)+1
-        m_y = int(y_end / unit)+1
-
-        for i in range(n_x, m_x):
-            self.line(
-                self.convert((unit*i, y_start)),
-                self.convert((unit*i, y_end)),
-                color
-            )
-        for i in range(n_y, m_y):
-            self.line(
-                self.convert((x_start, unit*i)),
-                self.convert((x_end, unit*i)),
-                color
-            )
-
     def draw_roads(self):
         for road in self.sim.roads:
             # Draw road background
@@ -248,18 +187,9 @@ class Window:
                 (road.length, 3.7),
                 cos=road.angle_cos,
                 sin=road.angle_sin,
-                color=(180, 180, 220),
+                color=(130, 130, 130),
                 centered=False
             )
-            # Draw road lines
-            # self.rotated_box(
-            #     road.start,
-            #     (road.length, 0.25),
-            #     cos=road.angle_cos,
-            #     sin=road.angle_sin,
-            #     color=(0, 0, 0),
-            #     centered=False
-            # )
 
             def arange(start, end, step):
                 i = start
@@ -283,10 +213,6 @@ class Window:
                         cos=road.angle_cos,
                         sin=road.angle_sin
                     )   
-            
-
-
-            # TODO: Draw road arrow
 
     def draw_vehicle(self, vehicle, road):
         l, h = vehicle.l,  2
@@ -351,12 +277,6 @@ class Window:
                         cos=road.angle_cos, sin=road.angle_sin,
                         color=color)
 
-    # def draw_status(self):
-    #     text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
-    #     text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
-    #
-    #     self.screen.blit(text_fps, (0, 0))
-    #     self.screen.blit(text_frc, (100, 0))
     def draw_pedestrian_crossing(self):
         for cross in self.sim.pedestrian_crossing:
             for i in range(0, 20, 4):
@@ -372,22 +292,16 @@ class Window:
                     cos=cross.roads[0].angle_cos, sin=cross.roads[0].angle_sin,
                     color=(128, 128, 128))
 
-
     def draw(self):
         # Fill background
         self.background(*self.bg_color)
-        # img = pygame.image.load('assets/background.png')
-        # img.convert()
+        img = pygame.image.load('assets/background.jpg')
+        img.convert()
         scale_x = int(self.width*self.zoom)
         scale_y = int(self.height*self.zoom)
         x_end, y_end = self.own_convert(self.width, self.height)
-        # img = pygame.transform.scale(img, (scale_x, scale_y))
-        # self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
-
-        # Major and minor grid and axes
-        self.draw_grid(4, (220, 220, 220))
-        # self.draw_grid(100, (200,200,200))
-        # self.draw_axes()
+        img = pygame.transform.scale(img, (scale_x, scale_y))
+        self.screen.blit(img, ((x_end-170)*self.zoom, (y_end-353)*self.zoom))
 
         self.draw_roads()
         self.draw_pedestrian_crossing()
@@ -395,7 +309,3 @@ class Window:
         self.draw_buses()
         self.draw_pedestrians()
         self.draw_signals()
-
-        # Draw status info
-        # self.draw_status()
-        
